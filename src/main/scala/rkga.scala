@@ -1,3 +1,5 @@
+package org.expr 
+
 object rkga:
 
   type CostFn = List[Int] => Double
@@ -38,6 +40,11 @@ object rkga:
     val c2 = pop.chromosomes((math.random * pop.chromosomes.length).toInt)
     one_point_crossover(c1, c2, prob)
 
+  def tournament_selection(pop: Population, costfn: CostFn, tsize: Int): Chromosome =
+    val chlist = List.fill(tsize)(pop.chromosomes((math.random * pop.chromosomes.length).toInt))
+    val chslist_with_cost = calculate_costs(chlist, costfn)
+    chslist_with_cost.minBy(_.cost)
+
   def random_mutation(c: Chromosome, p: Double): Chromosome =
     val genes = c.genes.map(x => if math.random < p then Math.random else x)
     Chromosome(genes, Double.MaxValue)
@@ -68,18 +75,18 @@ object rkga:
     val elite = sorted.take(params.elitism)
     val rest = sorted.drop(params.elitism)
     val newpop = elite ++ rest.map(c =>
-      val c1 = one_point_crossover(pop, params.crossprob)
-      random_mutation(c1, params.mutprob)
+      val c1 = tournament_selection(pop, params.costfn, 2)
+      val c2 = tournament_selection(pop, params.costfn, 2)
+      val c3 = one_point_crossover(c1, c2, params.crossprob)
+      random_mutation(c3, params.mutprob)
     )
     Population(calculate_costs(newpop, params.costfn))
 
-  def single_iter_ga(population: Population, params: GAParams): Population =
-    generation(population, params)
 
   def ga(population: Population, params: GAParams): Population =
     def loop(pop: Population, i: Int): Population =
       if i == params.maxiter then pop
-      else loop(single_iter_ga(pop, params), i + 1)
+      else loop(generation(pop, params), i + 1)
     loop(population, 0)
 
   def ga(

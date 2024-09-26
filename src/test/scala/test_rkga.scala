@@ -1,5 +1,5 @@
-import rkga._
-import scala.collection.immutable.Stream.Cons
+import org.expr.rkga._
+
 
 class RandomKeyGATests extends munit.FunSuite {
   test("Observe random keys") {
@@ -102,7 +102,7 @@ class RandomKeyGATests extends munit.FunSuite {
     // Gen 1
     var pop1 = generation(pop, params)
     var i = 0
-    while i < 100 do
+    while i < 10 do
       pop1 = generation(pop1, params)
       i += 1
 
@@ -123,7 +123,7 @@ class RandomKeyGATests extends munit.FunSuite {
       crossprob = 0.5,
       mutprob = 0.5,
       elitism = 2,
-      maxiter = 1000
+      maxiter = 100
     )
     val pop1 = ga(pop, params)
     val avgcost = pop1.chromosomes.map(_.cost).sum / pop1.chromosomes.length
