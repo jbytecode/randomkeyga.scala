@@ -19,7 +19,7 @@ class TSPTests extends munit.FunSuite {
     assertEquals(cost, bestcost)
   }
 
-  test("Simple Route with 5 nodes") {
+  test("Simple Route with 6 nodes") {
     val distanceMatrix = List(
         List(4.0, 3, 7, 11, 9, 8),
         List(3.0, 5, 9, 13, 7, 5),
