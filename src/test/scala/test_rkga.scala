@@ -87,7 +87,7 @@ class RandomKeyGATests extends munit.FunSuite {
       val expected = List(1.0, 2.0, 3.0, 4.0, 5.0, 6.0)
       x.zip(expected).map { case (a, b) => math.abs(a - b) }.sum
 
-    val pop = make_random_population(10, 6)
+    val pop = make_random_population(100, 6)
     val sortedpop =
       pop.chromosomes.map(c => calculate_cost(c, costfn)).sortBy(_.cost)
 
@@ -95,7 +95,7 @@ class RandomKeyGATests extends munit.FunSuite {
       costfn,
       crossprob = 0.5,
       mutprob = 0.5,
-      elitism = 2,
+      elitism = 4,
       maxiter = 10
     )
 
