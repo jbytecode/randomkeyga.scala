@@ -1,7 +1,7 @@
 import rkga._
 import scala.collection.immutable.Stream.Cons
 
-class MySuite extends munit.FunSuite {
+class RandomKeyGATests extends munit.FunSuite {
   test("Observe random keys") {
     val x = List(1.0, 2, 3, 4, -1, 0)
     val y = observe(x)
@@ -161,7 +161,7 @@ class MySuite extends munit.FunSuite {
     val bestcost = costfn(bestpermutation)
 
     val bestsolution = observe(pop1.chromosomes.head.genes)
-    
+
     assert(pop1.chromosomes.head.cost == bestcost)
   }
 
