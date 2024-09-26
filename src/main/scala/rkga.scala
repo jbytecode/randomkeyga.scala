@@ -3,7 +3,9 @@ object rkga:
   type CostFn = List[Int] => Double
 
   case class Chromosome(genes: List[Double], cost: Double)
+  
   case class Population(chromosomes: List[Chromosome])
+
   case class GAParams(
       costfn: CostFn,
       crossprob: Double,

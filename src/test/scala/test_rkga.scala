@@ -141,11 +141,9 @@ class RandomKeyGATests extends munit.FunSuite {
       List(4, 3, 2, 1, 0.0)
     )
     def costfn(x: List[Int]): Double =
-      val newx = x :+ x.head
-      var totalcost = 0.0
-      for i <- 0 until newx.length - 1 do
-        totalcost += distanceMatrix(newx(i))(newx(i + 1))
-      totalcost
+      val pairs = (x :+ x.head).sliding(2).toList
+      val costs = for i <- pairs yield distanceMatrix(i(0))(i(1))
+      costs.sum
 
     val pop = make_random_population(100, 5)
     val params = GAParams(
