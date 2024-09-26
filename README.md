@@ -4,7 +4,11 @@ Random Key Genetic Algorithms for Permutation Optimization in Scala
 
 # Example
 
+## Traveling Salesman Example
+
 ```scala
+import org.expr.tsp._
+
 val distanceMatrix = List(
       List(0, 1, 2, 3, 4.0),
       List(1, 0, 1, 2, 3.0),

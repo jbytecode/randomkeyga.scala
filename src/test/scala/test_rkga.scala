@@ -82,6 +82,21 @@ class RandomKeyGATests extends munit.FunSuite {
     )
   }
 
+  test("Tournament Selection"){
+    def costfn(x: List[Int]): Double =
+      val expected = List(0, 1, 2, 3, 4, 5)
+      x.zip(expected).map { case (a, b) => math.abs(a - b) }.sum
+
+    val pop = make_random_population(10, 6)
+    
+    // Sampling 1000 times to make sure the selected chromsome is the best and the same
+    // of course, this is not a good test, but it is a simple one
+    val c1 = tournament_selection(pop, costfn, 1000)
+    val c2 = tournament_selection(pop, costfn, 1000)
+
+    assert(c1.cost == c2.cost)
+  }
+
   test("Many generations") {
     def costfn(x: List[Int]): Double =
       val expected = List(1.0, 2.0, 3.0, 4.0, 5.0, 6.0)
