@@ -2,19 +2,19 @@ import org.expr.tsp._
 @main def hello(): Unit =
   
 
-  val distanceMatrix = List(
-      List(0, 1, 2, 3, 4.0),
-      List(1, 0, 1, 2, 3.0),
-      List(2, 1, 0, 1, 2.0),
-      List(3, 2, 1, 0, 1.0),
-      List(4, 3, 2, 1, 0.0)
+  val distanceMatrix = Vector(
+      Vector(0, 10, 20, 30, 40.0),
+      Vector(10, 0, 10, 20, 30.0),
+      Vector(20, 10, 0, 10, 20.0),
+      Vector(30, 20, 10, 0, 10.0),
+      Vector(40, 30, 20, 10, 0.0)
     )
 
   val popsize = 100
   val crossoverprob = 0.9
   val mutationprob = 0.1
-  val elitism = 1
-  val maxiter = 100
+  val elitism = 10
+  val maxiter = 5000
 
   val tspresult = tsp(distanceMatrix, 
                     popsize, 

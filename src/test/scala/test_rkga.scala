@@ -3,15 +3,15 @@ import org.expr.rkga._
 
 class RandomKeyGATests extends munit.FunSuite {
   test("Observe random keys") {
-    val x = List(1.0, 2, 3, 4, -1, 0)
+    val x = Vector(1.0, 2, 3, 4, -1, 0)
     val y = observe(x)
-    assertEquals(y, List(4, 5, 0, 1, 2, 3))
+    assertEquals(y, Vector(4, 5, 0, 1, 2, 3))
   }
 
   test("Observe Chromosome") {
-    val c = Chromosome(List(0.1, 0.2, 0.3, 0.4, -1.0, 0.0), 0.0)
+    val c = Chromosome(Vector(0.1, 0.2, 0.3, 0.4, -1.0, 0.0), 0.0)
     val y = observe(c)
-    assertEquals(y, List(4, 5, 0, 1, 2, 3))
+    assertEquals(y, Vector(4, 5, 0, 1, 2, 3))
   }
 
   test("Make Random Chromosome") {
@@ -22,18 +22,18 @@ class RandomKeyGATests extends munit.FunSuite {
   }
 
   test("One Point Crossover") {
-    val c1 = Chromosome(List(0.1, 0.2, 0.3, 0.4, -1.0, 0.0), 0.0)
-    val c2 = Chromosome(List(0.5, 0.6, 0.7, 0.8, 0.9, 1.0), 0.0)
-    val c = one_point_crossover(Population(List(c1, c2)), 1.0)
+    val c1 = Chromosome(Vector(0.1, 0.2, 0.3, 0.4, -1.0, 0.0), 0.0)
+    val c2 = Chromosome(Vector(0.5, 0.6, 0.7, 0.8, 0.9, 1.0), 0.0)
+    val c = one_point_crossover(Population(Vector(c1, c2)), 1.0)
     assertEquals(c.genes.length, 6)
     assertEquals(c.genes.forall(x => x >= -1.0 && x <= 1.0), true)
-    val cr0 = c.genes == List(0.5, 0.6, 0.7, 0.8, 0.9, 1.0)
-    val cr1 = c.genes == List(0.1, 0.6, 0.7, 0.8, 0.9, 1.0)
-    val cr2 = c.genes == List(0.1, 0.2, 0.7, 0.8, 0.9, 1.0)
-    val cr3 = c.genes == List(0.1, 0.2, 0.3, 0.8, 0.9, 1.0)
-    val cr4 = c.genes == List(0.1, 0.2, 0.3, 0.4, 0.9, 1.0)
-    val cr5 = c.genes == List(0.1, 0.2, 0.3, 0.4, -1.0, 1.0)
-    val cr6 = c.genes == List(0.1, 0.2, 0.3, 0.4, -1.0, 0.0)
+    val cr0 = c.genes == Vector(0.5, 0.6, 0.7, 0.8, 0.9, 1.0)
+    val cr1 = c.genes == Vector(0.1, 0.6, 0.7, 0.8, 0.9, 1.0)
+    val cr2 = c.genes == Vector(0.1, 0.2, 0.7, 0.8, 0.9, 1.0)
+    val cr3 = c.genes == Vector(0.1, 0.2, 0.3, 0.8, 0.9, 1.0)
+    val cr4 = c.genes == Vector(0.1, 0.2, 0.3, 0.4, 0.9, 1.0)
+    val cr5 = c.genes == Vector(0.1, 0.2, 0.3, 0.4, -1.0, 1.0)
+    val cr6 = c.genes == Vector(0.1, 0.2, 0.3, 0.4, -1.0, 0.0)
     assert(cr1 || cr2 || cr3 || cr4 || cr5 || cr6 || cr0)
   }
 
@@ -58,15 +58,15 @@ class RandomKeyGATests extends munit.FunSuite {
   }
 
   test("Calculate Cost of a Chromosome") {
-    def costfn(x: List[Int]): Double =
-      val expected = List(0, 1, 2, 3, 4, 5)
+    def costfn(x: Vector[Int]): Double =
+      val expected = Vector(0, 1, 2, 3, 4, 5)
       x.zip(expected).map { case (a, b) => math.abs(a - b) }.sum
 
-    val c = Chromosome(List(0, 1, 2, 3, 4, 5, 6), 0.0)
+    val c = Chromosome(Vector(0, 1, 2, 3, 4, 5, 6), 0.0)
     val c1 = calculate_cost(c, costfn)
     assertEquals(c1.cost, 0.0)
 
-    val c2 = Chromosome(List(6, 1, 2, 3, 4, 5), 0.0)
+    val c2 = Chromosome(Vector(6, 1, 2, 3, 4, 5), 0.0)
     val c3 = calculate_cost(c2, costfn)
     assertEquals(c3.cost, 10.0)
   }
@@ -83,8 +83,8 @@ class RandomKeyGATests extends munit.FunSuite {
   }
 
   test("Tournament Selection"){
-    def costfn(x: List[Int]): Double =
-      val expected = List(0, 1, 2, 3, 4, 5)
+    def costfn(x: Vector[Int]): Double =
+      val expected = Vector(0, 1, 2, 3, 4, 5)
       x.zip(expected).map { case (a, b) => math.abs(a - b) }.sum
 
     val pop = make_random_population(10, 6)
@@ -98,8 +98,8 @@ class RandomKeyGATests extends munit.FunSuite {
   }
 
   test("Many generations") {
-    def costfn(x: List[Int]): Double =
-      val expected = List(1.0, 2.0, 3.0, 4.0, 5.0, 6.0)
+    def costfn(x: Vector[Int]): Double =
+      val expected = Vector(1.0, 2.0, 3.0, 4.0, 5.0, 6.0)
       x.zip(expected).map { case (a, b) => math.abs(a - b) }.sum
 
     val pop = make_random_population(100, 6)
@@ -128,8 +128,8 @@ class RandomKeyGATests extends munit.FunSuite {
   }
 
   test("Full GA on a simple problem") {
-    def costfn(x: List[Int]): Double =
-      val expected = List(0, 1, 2, 3, 4, 5)
+    def costfn(x: Vector[Int]): Double =
+      val expected = Vector(0, 1, 2, 3, 4, 5)
       x.zip(expected).map { case (a, b) => math.abs(a - b) }.sum
 
     val pop = make_random_population(10, 6)
@@ -144,19 +144,19 @@ class RandomKeyGATests extends munit.FunSuite {
     val avgcost = pop1.chromosomes.map(_.cost).sum / pop1.chromosomes.length
 
     assertEquals(pop1.chromosomes.head.cost, 0.0)
-    assertEquals(observe(pop1.chromosomes.head.genes), List(0, 1, 2, 3, 4, 5))
+    assertEquals(observe(pop1.chromosomes.head.genes), Vector(0, 1, 2, 3, 4, 5))
   }
 
   test("Full GA on a TSP problem") {
-    val distanceMatrix = List(
-      List(0, 1, 2, 3, 4.0),
-      List(1, 0, 1, 2, 3.0),
-      List(2, 1, 0, 1, 2.0),
-      List(3, 2, 1, 0, 1.0),
-      List(4, 3, 2, 1, 0.0)
+    val distanceMatrix = Vector(
+      Vector(0, 1, 2, 3, 4.0),
+      Vector(1, 0, 1, 2, 3.0),
+      Vector(2, 1, 0, 1, 2.0),
+      Vector(3, 2, 1, 0, 1.0),
+      Vector(4, 3, 2, 1, 0.0)
     )
-    def costfn(x: List[Int]): Double =
-      val pairs = (x :+ x.head).sliding(2).toList
+    def costfn(x: Vector[Int]): Double =
+      val pairs = (x :+ x.head).sliding(2).toVector
       val costs = for i <- pairs yield distanceMatrix(i(0))(i(1))
       costs.sum
 
@@ -170,7 +170,7 @@ class RandomKeyGATests extends munit.FunSuite {
     )
     val pop1 = ga(pop, params)
 
-    val bestpermutation = List(0, 1, 2, 3, 4)
+    val bestpermutation = Vector(0, 1, 2, 3, 4)
     val bestcost = costfn(bestpermutation)
 
     val bestsolution = observe(pop1.chromosomes.head.genes)

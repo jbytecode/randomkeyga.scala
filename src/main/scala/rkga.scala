@@ -2,11 +2,11 @@ package org.expr
 
 object rkga:
 
-  type CostFn = List[Int] => Double
+  type CostFn = Vector[Int] => Double
 
-  case class Chromosome(genes: List[Double], cost: Double)
+  case class Chromosome(genes: Vector[Double], cost: Double)
   
-  case class Population(chromosomes: List[Chromosome])
+  case class Population(chromosomes: Vector[Chromosome])
 
   case class GAParams(
       costfn: CostFn,
@@ -16,13 +16,13 @@ object rkga:
       maxiter: Int
   )
 
-  def observe(values: List[Double]): List[Int] =
-    values.zipWithIndex.sortBy(_._1).map(_._2).toList
+  def observe(values: Vector[Double]): Vector[Int] =
+    values.zipWithIndex.sortBy(_._1).map(_._2).toVector
 
-  def observe(c: Chromosome): List[Int] = observe(c.genes)
+  def observe(c: Chromosome): Vector[Int] = observe(c.genes)
 
   def make_random_chromosome(chsize: Int): Chromosome =
-    Chromosome(List.fill(chsize)(math.random), Double.MaxValue)
+    Chromosome(Vector.fill(chsize)(math.random), Double.MaxValue)
 
   def one_point_crossover(
       c1: Chromosome,
@@ -41,7 +41,7 @@ object rkga:
     one_point_crossover(c1, c2, prob)
 
   def tournament_selection(pop: Population, costfn: CostFn, tsize: Int): Chromosome =
-    val chlist = List.fill(tsize)(pop.chromosomes((math.random * pop.chromosomes.length).toInt))
+    val chlist = Vector.fill(tsize)(pop.chromosomes((math.random * pop.chromosomes.length).toInt))
     val chslist_with_cost = calculate_costs(chlist, costfn)
     chslist_with_cost.minBy(_.cost)
 
@@ -53,19 +53,19 @@ object rkga:
     Chromosome(c.genes, costfn(observe(c)))
 
   def calculate_costs(
-      chromosomes: List[Chromosome],
+      chromosomes: Vector[Chromosome],
       costfn: CostFn
-  ): List[Chromosome] =
+  ): Vector[Chromosome] =
     chromosomes.map(c => calculate_cost(c, costfn))
 
-  def calculate_costs(pop: Population, costfn: CostFn): List[Chromosome] =
+  def calculate_costs(pop: Population, costfn: CostFn): Vector[Chromosome] =
     calculate_costs(pop.chromosomes, costfn)
 
   def average_cost(pop: Population): Double =
     pop.chromosomes.map(_.cost).sum / pop.chromosomes.length
 
   def make_random_population(psize: Int, chsize: Int): Population =
-    val chromosomes = List.fill(psize)(make_random_chromosome(chsize))
+    val chromosomes = Vector.fill(psize)(make_random_chromosome(chsize))
     Population(chromosomes)
 
   def generation(pop: Population, params: GAParams): Population =
