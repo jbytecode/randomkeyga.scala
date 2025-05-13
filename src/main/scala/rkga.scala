@@ -1,5 +1,7 @@
 package org.expr 
 
+import scala.math.random
+
 object rkga:
 
   type CostFn = Vector[Int] => Double
@@ -29,24 +31,24 @@ object rkga:
       c2: Chromosome,
       prob: Double
   ): Chromosome =
-    if prob < Math.random then
+    if prob < random() then
       val point = (math.random * c1.genes.length).toInt
       val genes = c1.genes.take(point) ++ c2.genes.drop(point)
       Chromosome(genes, Double.MaxValue)
     else c1
 
   def one_point_crossover(pop: Population, prob: Double): Chromosome =
-    val c1 = pop.chromosomes((math.random * pop.chromosomes.length).toInt)
-    val c2 = pop.chromosomes((math.random * pop.chromosomes.length).toInt)
+    val c1 = pop.chromosomes((random() * pop.chromosomes.length).toInt)
+    val c2 = pop.chromosomes((random() * pop.chromosomes.length).toInt)
     one_point_crossover(c1, c2, prob)
 
   def tournament_selection(pop: Population, costfn: CostFn, tsize: Int): Chromosome =
-    val chlist = Vector.fill(tsize)(pop.chromosomes((math.random * pop.chromosomes.length).toInt))
+    val chlist = Vector.fill(tsize)(pop.chromosomes((random() * pop.chromosomes.length).toInt))
     val chslist_with_cost = calculate_costs(chlist, costfn)
     chslist_with_cost.minBy(_.cost)
 
   def random_mutation(c: Chromosome, p: Double): Chromosome =
-    val genes = c.genes.map(x => if math.random < p then Math.random else x)
+    val genes = c.genes.map(x => if math.random < p then random() else x)
     Chromosome(genes, Double.MaxValue)
 
   def calculate_cost(c: Chromosome, costfn: CostFn): Chromosome =

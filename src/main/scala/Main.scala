@@ -1,7 +1,8 @@
 import org.expr.tsp._
+
+
 @main def hello(): Unit =
   
-
   val distanceMatrix = Vector(
       Vector(0, 10, 20, 30, 40.0),
       Vector(10, 0, 10, 20, 30.0),
@@ -24,13 +25,15 @@ import org.expr.tsp._
                     maxiter)
 
   val route = tspresult.route
+
   val cost = tspresult.cost
-  Console.println(Console.YELLOW + "The Random Key Genetic Algorithm - Example")
-  Console.println(Console.RED + "===========================================")
-  Console.println(Console.GREEN + "Distance Matrix:")
-  distanceMatrix.foreach(row => Console.println(Console.MAGENTA + row.mkString(" ")))
-  Console.println(Console.GREEN + s"Route: $route")
-  Console.println(Console.GREEN + s"Cost: $cost")
+  
+  println(Console.YELLOW + "The Random Key Genetic Algorithm - Example")
+  println(Console.RED + "===========================================")
+  println(Console.GREEN + "Distance Matrix:")
+  distanceMatrix.foreach(row => println(Console.MAGENTA + row.mkString(" ")))
+  println(Console.GREEN + s"Route: $route")
+  println(Console.GREEN + s"Cost: $cost")
   
 
 
